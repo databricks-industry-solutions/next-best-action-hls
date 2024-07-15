@@ -1,0 +1,19 @@
+﻿Channel,MMIX_SEGMENT_NAME,MMIX_SEGMENT_VALUE,Parameter1,Adj_Factor,Response Coefficient,Optimized_Frequency,Granularity,Transformation
+HQ Email,Segment_1,H,0.5,2,0.43,10,Quarterly,Log
+HQ Email,Segment_1,M,0.5,2,0.29,8,Quarterly,Log
+HQ Email,Segment_1,L,0.5,2,0.21,6,Quarterly,Log
+SF,Segment_1,H,0.5,2,0.83,8,Quarterly,Log
+SF,Segment_1,M,0.5,2,0.61,8,Quarterly,Log
+SF,Segment_1,L,0.5,2,0.41,4,Quarterly,Log
+Veeva Email,Segment_1,H,0.5,2,0.44,8,Quarterly,Log
+Veeva Email,Segment_1,M,0.5,2,0.54,6,Quarterly,Log
+Veeva Email,Segment_1,L,0.5,2,0.64,4,Quarterly,Log
+Medscape Alert,Segment_1,H,0.5,2,0.54,8,Quarterly,Log
+Medscape Alert,Segment_1,M,0.5,2,0.34,6,Quarterly,Log
+Medscape Alert,Segment_1,L,0.5,2,0.29,4,Quarterly,Log
+Medscape Email,Segment_1,H,0.5,2,0.54,8,Quarterly,Log
+Medscape Email,Segment_1,M,0.5,2,0.34,6,Quarterly,Log
+Medscape Email,Segment_1,L,0.5,2,0.29,4,Quarterly,Log
+EDH Alert,Segment_1,H,0.5,2,0.54,8,Quarterly,Log
+EDH Alert,Segment_1,M,0.5,2,0.24,6,Quarterly,Log
+EDH Alert,Segment_1,L,0.5,2,0.29,4,Quarterly,Log
