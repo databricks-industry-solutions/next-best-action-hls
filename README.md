@@ -1,5 +1,25 @@
+<img src=https://raw.githubusercontent.com/databricks-industry-solutions/.github/main/profile/solacc_logo.png width="600px">
+
+[![DBR](https://img.shields.io/badge/DBR-CHANGE_ME-red?logo=databricks&style=for-the-badge)](https://docs.databricks.com/release-notes/runtime/CHANGE_ME.html)
+[![CLOUD](https://img.shields.io/badge/CLOUD-CHANGE_ME-blue?logo=googlecloud&style=for-the-badge)](https://databricks.com/try-databricks)
+
 # NBA - Omnichannel Prediction Model
 The solution here aims to use AI/ML models to enhance NBA planning efficiency and effectiveness by leveraging machine learning techniques and comprehensive data analysis, and provide curated recommendation at a monthly/weekly level based on the types of constraints set.
+
+## Business Problem/Value Solution
+
+### Enhancing NBA Efficiency with Data-Driven Insights
+
+In today's competitive market, achieving optimal Next Best Action (NBA) planning is crucial for maintaining effective engagement with Healthcare Professionals (HCPs). Traditional methods often fail to consider the dynamic nature of HCP preferences and external constraints, leading to suboptimal promotional planning and budget utilization.
+
+Our Omnichannel Prediction Model addresses this challenge by leveraging advanced AI/ML techniques to provide actionable insights and recommendations. By integrating comprehensive data analysis and machine learning models, we enable organizations to:
+
+1. **Improve Planning Precision:** Establish quarterly guardrails and budget optimization strategies to ensure that promotional efforts align with engagement goals and vendor contracts.
+2. **Maximize Budget Efficiency:** Optimize touchpoint volume recommendations at the HCP level, ensuring that resources are allocated where they will have the most impact.
+3. **Adapt to Temporal Changes:** Convert quarterly recommendations into granular monthly plans, allowing for flexibility and responsiveness to changing market conditions.
+4. **Enhance Touchpoint Effectiveness:** Utilize decision tree-based models to develop an optimal sequence and distribution of touchpoints, maximizing the effectiveness of each interaction.
+
+By implementing this solution, organizations can significantly enhance their NBA planning processes, leading to increased engagement with HCPs, better budget management, and improved overall effectiveness of promotional activities.
 
 ## Solution Overview
 Here we have create a ML model, which generates NBA predictions based on the input data and user input contraints from GUI.
