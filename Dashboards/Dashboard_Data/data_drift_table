@@ -1,0 +1,24 @@
+Feature,Type,Stat_Test,Data_Drift,Threshold,Drift_Score
+HCP_ID,Numerical,wasserstein,Detected,0.75,0.752306192490448
+SEGMENT_1,Text,chisquare,Not Detected,0.9,0.5718313210275787
+SEGMENT_2,Text,chisquare,Not Detected,0.9,0.7606027063263122
+SEGMENT_3,Text,chisquare,Not Detected,0.9,0.5780108000340867
+CHANNEL,Text,chisquare,Not Detected,0.9,0.0750097609992747
+AFFINITY_SCORE,Numerical,wasserstein,Not Detected,0.75,0.5731292726766527
+IPP_FLAG,Numerical,wasserstein,Not Detected,0.75,0.3731320054612156
+CONSTRAINT_SEGMENT_NAME,Text,chisquare,Not Detected,0.9,0.8658300670882035
+CONSTRAINT_SEGMENT_VALUE,Text,chisquare,Not Detected,0.9,0.30934762362168733
+MMIX_SEGMENT_NAME,Text,chisquare,Not Detected,0.9,0.44358557475806626
+PARAMETER1,Numerical,wasserstein,Not Detected,0.75,0.21992253727551925
+ADJ_FACTOR,Numerical,wasserstein,Not Detected,0.75,0.5512185897187074
+RESPONSE_COEFFICIENT,Numerical,wasserstein,Detected,0.75,0.8223617020172052
+OPTIMIZED_FREQUENCY,Numerical,wasserstein,Not Detected,0.75,0.5181266589612528
+GRANULARITY,Text,chisquare,Detected,0.9,0.9226800826492456
+TRANSFORMATION,Text,chisquare,Detected,0.9,0.9341526451980983
+FINAL_MIN_TOUCHPOINTS_SEGMENT,Numerical,wasserstein,Not Detected,0.75,0.6436353937456069
+FINAL_MAX_TOUCHPOINTS_SEGMENT,Numerical,wasserstein,Not Detected,0.75,0.10727850936068817
+TOTAL_HCPS_SEGMENT,Numerical,wasserstein,Detected,0.75,0.9499644927536656
+TOTAL_HCPS_CHANNEL,Numerical,wasserstein,Not Detected,0.75,0.18665892316268307
+AFFINITY_SEGMENT,Text,chisquare,Not Detected,0.9,0.48653132328758586
+RESPONSE COEFFICIENT,Numerical,wasserstein,Not Detected,0.75,0.32903480138009833
+NEW_BETA,Numerical,wasserstein,Not Detected,0.75,0.002613037389071038

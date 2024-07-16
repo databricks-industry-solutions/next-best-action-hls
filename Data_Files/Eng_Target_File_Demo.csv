@@ -1,0 +1,19 @@
+Channel,Type,Target,Engagement rate,Granularity,Segment_Name,Segment_Value
+HQ Email,Engagement,300,0.1,Quarterly,Segment_1,H
+EDH Alert,Engagement,200,0.05,Quarterly,Segment_1,H
+Veeva Email,Engagement,100,0.15,Quarterly,Segment_1,H
+SF,Exposure,2000,1,Quarterly,Segment_1,H
+Medscape Alert,Engagement,300,0.05,Quarterly,Segment_1,H
+Medscape Email,Engagement,200,0.05,Quarterly,Segment_1,H
+HQ Email,Engagement,100,0.1,Quarterly,Segment_1,M
+EDH Alert,Engagement,200,0.05,Quarterly,Segment_1,M
+Veeva Email,Engagement,200,0.15,Quarterly,Segment_1,M
+SF,Exposure,2000,1,Quarterly,Segment_1,M
+Medscape Alert,Engagement,300,0.05,Quarterly,Segment_1,M
+Medscape Email,Engagement,200,0.05,Quarterly,Segment_1,M
+HQ Email,Engagement,300,0.1,Quarterly,Segment_1,L
+EDH Alert,Engagement,200,0.05,Quarterly,Segment_1,L
+Veeva Email,Engagement,100,0.15,Quarterly,Segment_1,L
+SF,Exposure,2000,1,Quarterly,Segment_1,L
+Medscape Alert,Engagement,200,0.05,Quarterly,Segment_1,L
+Medscape Email,Engagement,100,0.05,Quarterly,Segment_1,L
