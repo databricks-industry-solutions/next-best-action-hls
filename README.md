@@ -59,3 +59,19 @@ If you are new to Databricks, create an account at: https://databricks.com/try-d
 
 ## Datasets used
 Several omnichannel-specific datasets have been used to build and run the model. Sample datasets can be found in the "Data_Files" folder, along with an additional README "Data File Information.png" file containing data specifications.
+
+---
+
+© 2024 Databricks, Inc. All rights reserved. The source in this notebook is provided subject to the Databricks License [https://databricks.com/db-license]. All included or referenced third party libraries are subject to the licenses set forth below.
+
+| Library         | Description                                     | License           | Source                                             |
+|-----------------|-------------------------------------------------|-------------------|----------------------------------------------------|
+| pandas          | Data manipulation and analysis                  | BSD 3-Clause      | https://github.com/pandas-dev/pandas               |
+| numpy           | Numerical computing tools                       | BSD 3-Clause      | https://github.com/numpy/numpy                     |
+| scikit-learn    | Machine learning library                        | BSD 3-Clause      | https://github.com/scikit-learn/scikit-learn       |
+| gekko           | Optimization suite                              | MIT               | https://github.com/BYU-PRISM/GEKKO                 |
+| joblib          | Serialization and deserialization               | BSD 3-Clause      | https://github.com/joblib/joblib                   |
+| pyyaml          | YAML parsing and writing                        | MIT               | https://github.com/yaml/pyyaml                     |
+| plotly          | Interactive plotting library                    | MIT               | https://github.com/plotly/plotly.py                |
+| matplotlib      | Static plotting library                         | Matplotlib License| https://github.com/matplotlib/matplotlib           |
+| mlflow          | Machine learning lifecycle management           | Apache 2.0        | https://github.com/mlflow/mlflow                   |
