@@ -34,45 +34,22 @@ def create_table_from_csv(file_key, file_path, table_name):
     if(file_path!=None):
         # Read the CSV file into a DataFrame
         print(os.path.abspath(file_path))
-        file_path = os.path.abspath(file_path)
-        file_name = os.path.basename(file_path)
-        dbfs_path = f'/FileStore/shared_uploads/{file_name}'
-        dbutils.fs.cp("file://" + file_path, dbfs_path)
-
-        df_pd = pd.read_csv(file_path)
-
-        # Map pandas data types to Spark SQL types
-        dtype_mapping = {
-            'int64': IntegerType(),
-            'float64': DoubleType(),
-            'object': StringType(),
-            'datetime64': TimestampType()
-            # Add more mappings as needed for your specific data types
-        }
-
-        # Convert pandas data types to Spark SQL types and create StructField objects
-        fields = []
-        for col_name, col_type in df_pd.dtypes.items():
-            spark_type = dtype_mapping.get(str(col_type))
-            if spark_type:
-                fields.append(StructField(col_name, spark_type, True))
-        
-        # Create schema from StructType with inferred fields
-        schema = StructType(fields)
-        
+        file_path = os.path.abspath(file_path) 
 
         # Read the CSV file into a Spark DataFrame with inferred schema
-        df_spark = spark.read.option("header", "true").csv(dbfs_path, schema=schema)
+        df_spark = (spark.read.format("csv")
+                         .option("header", True)
+                         .option("inferSchema", True)
+                         .load(f"file://{file_path}"))
 
-        # Create a table name based on the file key
-        for col_name in df_spark.columns:
-            new_col_name = col_name.replace(" ", "_").replace(",", "").replace(";", "").replace("{", "").replace("}", "").replace("(", "").replace(")", "").replace("\n", "").replace("\t", "").replace("=", "")
-            df_spark = df_spark.withColumnRenamed(col_name, new_col_name)
+        col_names = [col_name.replace(" ", "_").replace(",", "").replace(";", "").replace("{", "").replace("}", "").replace("(", "").replace(")", "").replace("\n", "").replace("\t", "").replace("=", "") for col_name in df_spark.columns]
+        df_spark = df_spark.toDF(*col_names)
+
         # Create or replace the table in Databricks
         spark.sql(f"DROP TABLE IF EXISTS {table_name}")
         df_spark.write.mode("overwrite").saveAsTable(table_name)
         print(f"Table '{table_name}' created successfully from file '{file_path}'")
-        dbutils.fs.rm(dbfs_path)
+        # dbutils.fs.rm(dbfs_path)
 
 # COMMAND ----------
 

@@ -78,6 +78,16 @@ import logging
 # For processing and evaluating literal Python expressions
 import ast
 
+# For model tracking
+import mlflow
+
+# turn on autologging for mlflow
+mlflow.auto_log()
+
+# set up a default experiment name
+current_path = dbutils.notebook.entry_point.getDbutils().notebook().getContext().notebookPath().get()
+# set experiment for mlflow
+mlflow.set_experiment(f"{'/'.join(current_path.split('/')[:3])}/next_best_action_hls_demo")
 
 # COMMAND ----------
 
@@ -1592,6 +1602,10 @@ def final_merge(df_final, algo_df):
 
 # COMMAND ----------
 
+import mlflow
+
+# COMMAND ----------
+
 def run_constraint_module(config_path):
     """
     Orchestrates the execution of various modules related to constraint optimization.
@@ -1603,74 +1617,76 @@ def run_constraint_module(config_path):
     - None
     """
 
-    # Load configuration from the provided config file
-    load_config(config_path) 
+    #load mlflow
+    with mlflow.start_run():
+        # Load configuration from the provided config file
+        load_config(config_path) 
 
-    # Validate files
-    validation_result = validate_files(config_file_paths)
+        # Validate files
+        validation_result = validate_files(config_file_paths)
 
-    # Check if the script is running in Databricks environment
-    if 'databricks' in sys.modules:
-        if validation_result:
-            print('Processing files for optimization module')
+        # Check if the script is running in Databricks environment
+        if 'databricks' in sys.modules:
+            if validation_result:
+                print('Processing files for optimization module')
+                df_final = process_files(config_file_paths, allow_processing_with_errors=True)
+                if df_final is not None:
+                    print('Running Optimization Model in Databricks environment')
+                    # Run optimization model
+                else:
+                    print('Errors in Processing Files. Check Logs for more details')
+            else:
+                print("Validation failed. Please check the logs for details.")
+                sys.exit(1)
+        # else:
+            # User to choose whether to proceed with processing even if there are validation errors
+        proceed_with_errors = 'y'
+        if not validation_result:
+            proceed_with_errors = input("Do you want to proceed with processing despite validation errors? (y/n): ")
+        if proceed_with_errors.lower() == 'y':
             df_final = process_files(config_file_paths, allow_processing_with_errors=True)
+            affinity_segment_charts(df_final)
             if df_final is not None:
-                print('Running Optimization Model in Databricks environment')
-                # Run optimization model
-            else:
-                print('Errors in Processing Files. Check Logs for more details')
-        else:
-            print("Validation failed. Please check the logs for details.")
-            sys.exit(1)
-    # else:
-        # User to choose whether to proceed with processing even if there are validation errors
-    proceed_with_errors = 'y'
-    if not validation_result:
-        proceed_with_errors = input("Do you want to proceed with processing despite validation errors? (y/n): ")
-    if proceed_with_errors.lower() == 'y':
-        df_final = process_files(config_file_paths, allow_processing_with_errors=True)
-        affinity_segment_charts(df_final)
-        if df_final is not None:
-            print('Running Optimization Model')
-            train_df = create_subsets(df_final)
-            df_for_algo = run_gekko_optimization(train_df)
-            quarterly_gekko_df = final_merge(df_final, df_for_algo)
+                print('Running Optimization Model')
+                train_df = create_subsets(df_final)
+                df_for_algo = run_gekko_optimization(train_df)
+                quarterly_gekko_df = final_merge(df_final, df_for_algo)
 
-            print('Optimization model run completed')
-            print('Allocating_final_quarterly_tps')
+                print('Optimization model run completed')
+                print('Allocating_final_quarterly_tps')
 
-            final_quarterly_plan = tp_allocation(quarterly_gekko_df)
-            print('Calculating Uplift')
-            uplift_calc(final_quarterly_plan)
-            final_output_level = select_option(config_controls.get('final_output_level', {}))
-            if final_output_level == 'QUARTERLY':
-                output_path = os.path.join(output_folder,'Final_Plan','HCP_Quarterly_Plan.csv')
-                final_quarterly_plan.to_csv(output_path,index=False)
-                print('Quarterly HCP Promotional Plan Created')
-                # sys.exit()
-                quit()
-            else:
-                monthly_plan  = quarterly_to_monthly(final_quarterly_plan) 
-                if final_output_level == 'MONTHLY':
-                    print('Monthly HCP Promotional Plan Created')
-                    output_path = os.path.join(output_folder,'Final_Plan','HCP_Monthly_Plan.csv')
-                    monthly_plan.to_csv(output_path,index=False)
+                final_quarterly_plan = tp_allocation(quarterly_gekko_df)
+                print('Calculating Uplift')
+                uplift_calc(final_quarterly_plan)
+                final_output_level = select_option(config_controls.get('final_output_level', {}))
+                if final_output_level == 'QUARTERLY':
+                    output_path = os.path.join(output_folder,'Final_Plan','HCP_Quarterly_Plan.csv')
+                    final_quarterly_plan.to_csv(output_path,index=False)
+                    print('Quarterly HCP Promotional Plan Created')
                     # sys.exit()
                     quit()
                 else:
-                    print('Creating Weekly HCP Promotional Plan')
-                    weekly_plan = weekly_tps(monthly_plan)
-                    final_weekly_seq  = weekly_seq(weekly_plan,historical_data)
-                    output_path = os.path.join(output_folder,'Final_Plan','HCP_Weekly_Plan.csv')
-                    final_weekly_seq.to_csv(output_path,index=False)
-                    # sys.exit()
-                    quit()    
+                    monthly_plan  = quarterly_to_monthly(final_quarterly_plan) 
+                    if final_output_level == 'MONTHLY':
+                        print('Monthly HCP Promotional Plan Created')
+                        output_path = os.path.join(output_folder,'Final_Plan','HCP_Monthly_Plan.csv')
+                        monthly_plan.to_csv(output_path,index=False)
+                        # sys.exit()
+                        quit()
+                    else:
+                        print('Creating Weekly HCP Promotional Plan')
+                        weekly_plan = weekly_tps(monthly_plan)
+                        final_weekly_seq  = weekly_seq(weekly_plan,historical_data)
+                        output_path = os.path.join(output_folder,'Final_Plan','HCP_Weekly_Plan.csv')
+                        final_weekly_seq.to_csv(output_path,index=False)
+                        # sys.exit()
+                        quit()    
+            else:
+                print('Errors in Processing Files. Check Logs for more details')
+                sys.exit(1)
         else:
-            print('Errors in Processing Files. Check Logs for more details')
+            print("Processing aborted.Validation failed.Please check the logs for details.")
             sys.exit(1)
-    else:
-        print("Processing aborted.Validation failed.Please check the logs for details.")
-        sys.exit(1)
 
 # COMMAND ----------
 
