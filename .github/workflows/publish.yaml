@@ -107,7 +107,7 @@ jobs:
           else:
             logging.error(f"Exiting due to no objects found in the workspace path: {db_path}")
             raise Exception(f"No objects found in the workspace path: {db_path}")
-  shell: python
+        shell: python
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
