@@ -51,28 +51,43 @@ jobs:
 
       - name: Package solution accelerator
         run: |
-          
           import os
           import configparser
           import io
+          import logging
           from databricks.solutions import Accelerator
+
+          # Set up logging
+          logging.basicConfig(level=logging.DEBUG)
+
+          # Read and log environment variables
+          db_profiles = os.environ.get('DB_PROFILES')
+          logging.debug(f'DB_PROFILES: {db_profiles}')
           
           config = configparser.ConfigParser()
-          config.read_file(io.StringIO(os.environ['DB_PROFILES']))
-          if '${{ github.event.inputs.db_profile }}' not in config.sections():
-            raise Exception('Provided DB_PROFILE is not supported')
-          config = config['${{ github.event.inputs.db_profile }}']
+          config.read_file(io.StringIO(db_profiles))
           
+          db_profile = '${{ github.event.inputs.db_profile }}'
+          db_path = '${{ github.event.inputs.db_path }}'
           split_markdown = '${{ github.event.inputs.split_markdown }}' == 'true'
+
+          logging.debug(f'db_profile: {db_profile}')
+          logging.debug(f'db_path: {db_path}')
+          logging.debug(f'split_markdown: {split_markdown}')
+          
+          if db_profile not in config.sections():
+            raise Exception(f'Provided DB_PROFILE ({db_profile}) is not supported')
+          config = config[db_profile]
+          
+          logging.debug(f'Config section: {config}')
           
           Accelerator(
             db_host=config['host'],
             db_token=config['token'],
-            db_path='${{ github.event.inputs.db_path }}',
+            db_path=db_path,
             db_name='${{ github.event.repository.name }}',
             markdown=split_markdown,
           ).release()
-
         shell: python
 
       - name: Upload artifact
