@@ -56,10 +56,10 @@ jobs:
           import io
           import logging
           from databricks.solutions import Accelerator
-
+      
           # Set up logging
           logging.basicConfig(level=logging.DEBUG)
-
+      
           # Read and log environment variables
           db_profiles = os.environ.get('DB_PROFILES')
           logging.debug(f'DB_PROFILES: {db_profiles}')
@@ -70,7 +70,7 @@ jobs:
           db_profile = '${{ github.event.inputs.db_profile }}'
           db_path = '${{ github.event.inputs.db_path }}'
           split_markdown = '${{ github.event.inputs.split_markdown }}' == 'true'
-
+      
           logging.debug(f'db_profile: {db_profile}')
           logging.debug(f'db_path: {db_path}')
           logging.debug(f'split_markdown: {split_markdown}')
@@ -80,14 +80,27 @@ jobs:
           config = config[db_profile]
           
           logging.debug(f'Config section: {config}')
-          
-          Accelerator(
+      
+          # Initialize Accelerator
+          accelerator = Accelerator(
             db_host=config['host'],
             db_token=config['token'],
             db_path=db_path,
             db_name='${{ github.event.repository.name }}',
             markdown=split_markdown,
-          ).release()
+          )
+          
+          # Attempt to list workspace objects and log the response
+          try:
+            response = accelerator.db.workspace.list(db_path)
+            logging.debug(f'Workspace list response: {response}')
+            db_objects = response['objects']
+          except KeyError as e:
+            logging.error(f"'objects' key not found in the response: {response}")
+            raise
+      
+          # Continue with the release process
+          accelerator.release()
         shell: python
 
       - name: Upload artifact
